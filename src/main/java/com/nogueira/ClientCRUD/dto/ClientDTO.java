@@ -1,37 +1,34 @@
-package com.nogueira.ClientCRUD.entities;
+package com.nogueira.ClientCRUD.dto;
 
 import java.time.LocalDate;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.nogueira.ClientCRUD.entities.Client;
 
-@Entity
-public class Client {
+public class ClientDTO {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	private String name;
-	
-	@Column(unique = true)
 	private String cpf;
 	private Double income;
 	private LocalDate birthDate;
 	private Integer children;
 
-	public Client() {
-	}
-
-	public Client(Long id, String name, String cpf, Double income, LocalDate birthDate, Integer children) {
+	public ClientDTO(Long id, String name, String cpf, Double income, LocalDate birthDate, Integer children) {
 		this.id = id;
 		this.name = name;
 		this.cpf = cpf;
 		this.income = income;
 		this.birthDate = birthDate;
 		this.children = children;
+	}
+
+	public ClientDTO(Client entity) {
+		id = entity.getId();
+		name = entity.getName();
+		cpf = entity.getCpf();
+		income = entity.getIncome();
+		birthDate = entity.getBirthDate();
+		children = entity.getChildren();
 	}
 
 	public Long getId() {
