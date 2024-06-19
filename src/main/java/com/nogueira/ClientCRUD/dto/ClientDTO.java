@@ -4,12 +4,23 @@ import java.time.LocalDate;
 
 import com.nogueira.ClientCRUD.entities.Client;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.PastOrPresent;
+import jakarta.validation.constraints.Positive;
+
 public class ClientDTO {
 
 	private Long id;
+	
+	@NotBlank(message = "Campo requerido")
 	private String name;
+	@NotBlank(message = "Campo requerido")
 	private String cpf;
+	
+	@Positive(message = "O preço deve ser positivo")
 	private Double income;
+	
+	@PastOrPresent(message = "Insira uma data válida")
 	private LocalDate birthDate;
 	private Integer children;
 
