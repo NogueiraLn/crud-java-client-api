@@ -11,6 +11,8 @@ import com.nogueira.ClientCRUD.entities.Client;
 import com.nogueira.ClientCRUD.exceptions.ResourceNotFoundException;
 import com.nogueira.ClientCRUD.repositories.ClientRepository;
 
+import jakarta.persistence.EntityNotFoundException;
+
 @Service
 public class ClientService {
 
@@ -24,8 +26,41 @@ public class ClientService {
 		return new ClientDTO(client);
 	}
 
+	@Transactional(readOnly = true)
 	public Page<ClientDTO> findaAll(Pageable pageable){
 		Page<Client> result = repository.findAll(pageable);
 		return result.map(x -> new ClientDTO(x));
 	}
+	
+	@Transactional
+	public ClientDTO insert(ClientDTO dto) {
+		Client client = new Client();
+		copyDtoToEntity(dto, client);
+		
+		client = repository.save(client);
+		return new ClientDTO(client);
+	}
+	
+	@Transactional
+	public ClientDTO update(Long id, ClientDTO dto) {
+		try {
+			Client client = repository.getReferenceById(id);
+			copyDtoToEntity(dto, client);
+			
+			client = repository.save(client);
+			return new ClientDTO(client);
+		} catch (EntityNotFoundException e) {
+			throw new ResourceNotFoundException("Recurso não encontrado");
+		}
+	}
+
+	private void copyDtoToEntity(ClientDTO dto, Client client) {
+		client.setName(dto.getName());
+		client.setCpf(dto.getCpf());
+		client.setIncome(dto.getIncome());
+		client.setBirthDate(dto.getBirthDate());
+		client.setChildren(dto.getChildren());
+	}
+	
+	
 }
